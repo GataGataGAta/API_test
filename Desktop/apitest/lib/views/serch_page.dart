@@ -12,13 +12,14 @@ final searchResultProvider = StateProvider<List<Article>>((ref) => []);
 
 @override
 Widget build(BuildContext context) {
-  return const MaterialApp(
+  return MaterialApp(
     home: SearchScreen(),
   );
 }
 
 class SearchScreen extends ConsumerWidget {
-  const SearchScreen({super.key});
+  SearchScreen({super.key});
+  List<Article> articles = [];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,31 +45,12 @@ class SearchScreen extends ConsumerWidget {
                 ref.read(searchResultProvider.notifier).state = results;
               },
             ),
-            ArticleContainer(
-              article: Article(
-                title: '西岡優太の初恋の相手、ゆうこちゃんに徹底取材！彼のどこに惚れたのか！？',
-                user: User(
-                  id: 'test',
-                  profileImageUrl:
-                      'https://firebasestorage.googleapis.com/v0/b/gs-expansion-test.appspot.com/o/unknown_person.png?alt=media',
-                ),
-                createdAt: DateTime.now(),
-                tags: ['Flutter', 'dart'],
-                url: 'https://example.com',
-              ),
-            ),
             Expanded(
-              child: ListView.builder(
-                itemCount: searchResults.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final article = searchResults[index];
-                  return ListTile(
-                    title: Text(article.title),
-                    // 他の記事情報を表示...
-                  );
-                },
-              ),
-            ),
+                child: ListView(
+              children: articles
+                  .map((article) => ArticleContainer(article: article))
+                  .toList(),
+            )),
           ],
         ),
       ),
