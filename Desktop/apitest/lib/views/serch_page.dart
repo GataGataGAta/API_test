@@ -10,24 +10,11 @@ import 'package:apitest/models/user.dart';
 final searchProvider = StateProvider<String>((ref) => "");
 final searchResultProvider = StateProvider<List<Article>>((ref) => []);
 
-void main() async {
-  await dotenv.load(fileName: ".env"); // dotenvをロード
-  runApp(
-    ProviderScope(
-      child: MyApp(),
-    ),
+@override
+Widget build(BuildContext context) {
+  return const MaterialApp(
+    home: SearchScreen(),
   );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SearchScreen(),
-    );
-  }
 }
 
 class SearchScreen extends ConsumerWidget {
@@ -59,7 +46,7 @@ class SearchScreen extends ConsumerWidget {
             ),
             ArticleContainer(
               article: Article(
-                title: 'テスト',
+                title: '西岡優太の初恋の相手、ゆうこちゃんに徹底取材！彼のどこに惚れたのか！？',
                 user: User(
                   id: 'test',
                   profileImageUrl:

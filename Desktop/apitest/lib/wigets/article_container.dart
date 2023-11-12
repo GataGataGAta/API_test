@@ -29,8 +29,64 @@ class ArticleContainer extends StatelessWidget {
               Radius.circular(32), // ← 角丸を設定
             ),
           ),
-          child: const Column(
-            children: [],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                DateFormat('yyyy/MM/dd').format(article.createdAt),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ), //日付
+              Text(
+                article.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ), //タイトル
+              Text(
+                '#${article.tags.join(' #')}',
+                style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic),
+              ), //タグ
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Column(
+                    children: [
+                      const Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        article.likesCount.toString(),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      CircleAvatar(
+                        radius: 26,
+                        backgroundImage:
+                            NetworkImage(article.user.profileImageUrl),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ],
           ),
         ));
   }
