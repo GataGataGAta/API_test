@@ -2,6 +2,7 @@ import 'package:apitest/views/article_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:apitest/models/article.dart';
 import 'package:intl/intl.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class ArticleContainer extends StatelessWidget {
   const ArticleContainer({

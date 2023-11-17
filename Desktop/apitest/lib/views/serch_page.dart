@@ -1,14 +1,11 @@
 import 'package:apitest/wigets/article_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:apitest/models/article.dart';
-import 'package:apitest/models/user.dart';
 
-final searchProvider = StateProvider<String>((ref) => "");
-final searchResultProvider = StateProvider<List<Article>>((ref) => []);
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 @override
 Widget build(BuildContext context) {
@@ -17,15 +14,12 @@ Widget build(BuildContext context) {
   );
 }
 
-class SearchScreen extends ConsumerWidget {
+class SearchScreen extends HookWidget {
   SearchScreen({super.key});
-  List<Article> articles = [];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final searchQuery = ref.watch(searchProvider);
-    final searchResults = ref.watch(searchResultProvider);
-
+  Widget build(BuildContext context) {
+    final result = useState<List<Article>>([]);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Qiita Search'),
@@ -42,13 +36,16 @@ class SearchScreen extends ConsumerWidget {
               ),
               onSubmitted: (String value) async {
                 final results = await searchQiita(value);
-                ref.read(searchResultProvider.notifier).state = results;
+                result.value = results;
+                debugPrint(result.value.toString());
               },
             ),
             Expanded(
                 child: ListView(
-              children: articles
-                  .map((article) => ArticleContainer(article: article))
+              children: result.value
+                  .map(
+                    (article) => ArticleContainer(article: article),
+                  )
                   .toList(),
             )),
           ],

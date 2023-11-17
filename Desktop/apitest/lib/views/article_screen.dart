@@ -1,32 +1,32 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:apitest/models/article.dart';
+import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-// WebViewControllerのためのProviderを定義します。
-final webViewControllerProvider =
-    StateProvider<WebViewController?>((ref) => null);
+class ArticleScreen extends StatefulWidget {
+  const ArticleScreen({
+    super.key,
+    required this.article,
+  });
 
-class ArticleScreen extends ConsumerWidget {
   final Article article;
 
-  const ArticleScreen({Key? key, required this.article}) : super(key: key);
+  @override
+  State<ArticleScreen> createState() => _ArticleScreenState();
+}
+
+class _ArticleScreenState extends State<ArticleScreen> {
+  late WebViewController controller = WebViewController()
+    ..loadRequest(
+      Uri.parse(widget.article.url),
+    );
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(article.title),
+        title: const Text('Article Page'),
       ),
-      body: WebView(
-        initialUrl: article.url,
-        onWebViewCreated: (WebViewController webViewController) {
-          // Providerを介してWebViewControllerをセットします。
-          ref.read(webViewControllerProvider.notifier).state =
-              webViewController;
-        },
-        // WebViewの他の設定...
-      ),
+      body: WebViewWidget(controller: controller),
     );
   }
 }
